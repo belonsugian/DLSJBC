@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DLSJBC | Grade Management System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="dlsjbc.css">
+</head>
+<body>
+
+<div id="authView">
+    <div class="auth-shell">
+        <div class="auth-sidebar">
+            <div class="auth-sidebar-inner">
+                <div class="logo-circle">
+                    <!-- Put your logo image here -->
+                    <img src="logo.png" alt="DLSJBC Logo">
+                </div>
+                <h1>DLSJBC</h1>
+                <p>De La Salle John Bosco College<br>Grade Management System</p>
+                <div class="sidebar-divider">▸ Select Your Portal</div>
+                <div class="sidebar-pills">
+                    <button class="role-pill active" data-role="student" onclick="selectRole('student',this)">🎓 Student Portal</button>
+                    <button class="role-pill" data-role="teacher" onclick="selectRole('teacher',this)">👨‍🏫 Teacher Portal</button>
+                    <button class="role-pill admin-pill" data-role="admin" onclick="selectRole('admin',this)">🛡️ Administrator</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="auth-main">
+            <div class="auth-card">
+                <div class="portal-selector-header">
+                    <div class="portal-selector-label">Select Your Portal</div>
+                    <div class="portal-grid">
+                        <button onclick="selectRole('student',this)" class="portal-btn active" data-role="student">🎓 Student</button>
+                        <button onclick="selectRole('teacher',this)" class="portal-btn" data-role="teacher">👨‍🏫 Teacher</button>
+                        <button onclick="selectRole('admin',this)" class="portal-btn admin-btn" data-role="admin">🛡️ Admin</button>
+                    </div>
+                </div>
+
+                <div id="auth-student" class="role-auth show">
+                    <h2>Student Portal</h2>
+                    <p class="sub">Access your academic records</p>
+                    <div class="auth-tabs">
+                        <button class="auth-tab active" onclick="switchTab('student','login',this)">Login</button>
+                        <button class="auth-tab" onclick="switchTab('student','signup',this)">Sign Up</button>
+                    </div>
+                    <div id="student-login">
+                        <input type="text" id="sLoginId" placeholder="Username / Email / Student ID" class="input">
+                        <div class="pass-wrap">
+                            <input type="password" id="sLoginPass" placeholder="Password" class="input">
+                            <button class="pass-toggle" onclick="tp('sLoginPass',this)" type="button">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                            </button>
+                        </div>
+                        <button class="btn" onclick="doAuth('student','login')">Login</button>
+                        <button class="btn-link" onclick="openForgot()">Forgot Password?</button>
+                    </div>
+                    <div id="student-signup" style="display:none">
+                        <input type="text" id="ssuFullname" placeholder="Full Name (Last, First)" class="input">
+                        <input type="text" id="ssuUsername" placeholder="Username" class="input">
+                        <input type="email" id="ssuEmail" placeholder="Email (@gmail.com)" class="input">
+                        <input type="text" id="ssuStudentId" placeholder="Student ID (e.g., D2025001)" class="input">
+                        <div class="pass-wrap">
+                            <input type="password" id="ssuPass" placeholder="Password" class="input">
+                            <button class="pass-toggle" onclick="tp('ssuPass',this)" type="button">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                            </button>
+                        </div>
+                        <div class="three-col">
+                            <select id="ssuProgram" class="input"><option value="">-- Program --</option><option>BSIT</option><option>BSHRM</option><option>BSTM</option><option>TEED</option><option>BEED</option><option>BSCS</option><option>BSBA</option><option>BSA</option></select>
+                            <select id="ssuYear" class="input"><option value="">-- Year --</option><option>1st Year</option><option>2nd Year</option><option>3rd Year</option><option>4th Year</option></select>
+                            <select id="ssuSection" class="input"><option value="">-- Section --</option></select>
+                        </div>
+                        <button class="btn" onclick="doAuth('student','signup')">Sign Up</button>
+                    </div>
+                    <div id="authMsg-student" class="msg"></div>
+                </div>
+
+                <div id="auth-teacher" class="role-auth">
+                    <h2>Teacher Portal</h2>
+                    <p class="sub">Access grading &amp; student records</p>
+                    <div class="auth-tabs">
+                        <button class="auth-tab active" onclick="switchTab('teacher','login',this)">Login</button>
+                        <button class="auth-tab" onclick="switchTab('teacher','signup',this)">Sign Up</button>
+                    </div>
+                    <div id="teacher-login">
+                        <input type="text" id="tLoginId" placeholder="Username or Email" class="input">
+                        <div class="pass-wrap">
+                            <input type="password" id="tLoginPass" placeholder="Password" class="input">
+                            <button class="pass-toggle" onclick="tp('tLoginPass',this)" type="button">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                            </button>
+                        </div>
+                        <button class="btn btn-gold" onclick="doAuth('teacher','login')">Teacher Login</button>
+                    </div>
+                    <div id="teacher-signup" style="display:none">
+                        <input type="text" id="tsuFullname" placeholder="Full Name" class="input">
+                        <input type="text" id="tsuUsername" placeholder="Username" class="input">
+                        <input type="email" id="tsuEmail" placeholder="Email (@gmail.com)" class="input">
+                        <div class="three-col">
+                            <select id="tsuProgram" class="input"><option value="">-- Program --</option><option>BSIT</option><option>BSHRM</option><option>BSTM</option><option>TEED</option><option>BEED</option><option>BSCS</option><option>BSBA</option><option>BSA</option></select>
+                            <select id="tsuYear" class="input"><option value="">-- Year --</option><option>1st Year</option><option>2nd Year</option><option>3rd Year</option><option>4th Year</option></select>
+                            <select id="tsuSection" class="input"><option value="">-- Section --</option></select>
+                        </div>
+                        <div class="pass-wrap">
+                            <input type="password" id="tsuPass" placeholder="Password" class="input">
+                            <button class="pass-toggle" onclick="tp('tsuPass',this)" type="button">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                            </button>
+                        </div>
+                        <div class="alert-warn">⚠️ Teacher accounts require admin approval after sign-up.</div>
+                        <button class="btn" onclick="doAuth('teacher','signup')">Request Access</button>
+                    </div>
+                    <div id="authMsg-teacher" class="msg"></div>
+                </div>
+
+                <div id="auth-admin" class="role-auth">
+                    <h2>Administrator</h2>
+                    <p class="sub">Full system control &amp; oversight</p>
+                    <input type="text" id="adminLoginId" placeholder="Admin Username" class="input">
+                    <div class="pass-wrap">
+                        <input type="password" id="adminLoginPass" placeholder="Admin Password" class="input">
+                        <button class="pass-toggle" onclick="tp('adminLoginPass',this)" type="button">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                        </button>
+                    </div>
+                    <button class="btn btn-admin" onclick="doAuth('admin','login')">🛡️ Admin Login</button>
+                    <div id="authMsg-admin" class="msg"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="mainView" style="display:none">
+    <div class="header">
+        <div class="logo-bar">
+            <!-- Put your logo image here -->
+            <img src="logo.png" alt="DLSJBC Logo" class="mini-logo">
+            <div><div class="header-title">DLSJBC</div><div class="header-sub">Excellence &amp; Service · GradeHub</div></div>
+        </div>
+        <div class="user-bar"><div id="headerAvatar" class="avatar-circle"></div><span id="headerName" style="color:#fff;font-weight:600;font-size:0.83rem;"></span><span id="headerRoleBadge" class="role-badge"></span><button class="btn-sm" onclick="logout()">Logout</button></div>
+    </div>
+    <div id="navTabsBar" class="nav-tabs"></div>
+    <div class="main-content">
+        <div id="view-student" class="tab-content">
+            <div class="page-title">My Academic Record</div>
+            <p class="page-sub" id="studentViewSubtitle"></p>
+            <div class="two-col">
+                <div class="panel">
+                    <div class="panel-header"><h3>📚 Grade Sheet</h3><span id="studentBadge" style="font-size:0.72rem;font-weight:600;color:var(--green-main);"></span></div>
+                    <div class="table-wrap">
+                        <table>
+                            <thead><tr><th>Subject</th><th>Grade</th><th>Remarks</th></tr></thead>
+                            <tbody id="myGradesBody"></tbody>
+                        </table>
+                    </div>
+                    <div class="footer-note">1.0 = Highest · 5.0 = Lowest · GPA averaged from 6 core subjects</div>
+                </div>
+                <div class="panel">
+                    <div class="panel-header"><h3>📊 Academic Standing</h3></div>
+                    <div style="padding:1.1rem;">
+                        <div id="gpaDisplay" style="font-family:'Playfair Display',serif;font-size:2.8rem;color:var(--green-main);text-align:center;margin-bottom:0.4rem;"></div>
+                        <div id="standingDisplay" style="text-align:center;font-size:0.83rem;font-weight:600;margin-bottom:0.9rem;"></div>
+                        <div style="height:9px;border-radius:5px;background:var(--gray-100);margin-bottom:0.9rem;overflow:hidden;"><div id="gpaFill" style="height:100%;border-radius:5px;background:linear-gradient(90deg,var(--green-light),var(--green-main));transition:width .5s;"></div></div>
+                        <div id="profileInfoCard" style="background:var(--green-frost);border-radius:7px;padding:0.75rem 0.9rem;font-size:0.78rem;line-height:1.7;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="view-grades" class="tab-content">
+            <div class="page-title">Grade Management</div>
+            <p class="page-sub">Students grouped by Section, sorted A–Z by last name</p>
+            <div class="stats">
+                <div class="stat"><div class="num" id="statTotal">0</div><div class="lbl">Total Students</div></div>
+                <div class="stat"><div class="num" id="statActive">0</div><div class="lbl">Active Enrolled</div></div>
+                <div class="stat gold"><div class="num" id="statHonor">0</div><div class="lbl">Honor Roll ≤1.8</div></div>
+                <div class="stat"><div class="num" id="statFail">0</div><div class="lbl">At Risk (≥3.0)</div></div>
+            </div>
+            <div class="two-col">
+                <div class="panel">
+                    <div class="panel-header"><h3>🎓 Student Preview</h3><select id="previewStudentDd" class="btn-outline" style="border-radius:5px;font-size:0.74rem;"></select></div>
+                    <div class="table-wrap">
+                        <table>
+                            <thead><tr><th>Subject</th><th>Grade</th><th>Remarks</th></tr></thead>
+                            <tbody id="previewGradesBody"></tbody>
+                        </table>
+                    </div>
+                    <div class="footer-note">Select a student above to preview grades</div>
+                </div>
+                <div class="panel">
+                    <div class="panel-header"><h3>📋 Students by Section</h3><button class="btn-small" onclick="openAddStudentModal()">+ Add Student</button></div>
+                    <div class="table-wrap">
+                        <table id="instructorTable">
+                            <thead><tr><th>ID</th><th>Name</th><th>Program</th><th>Year</th><th>Sec</th><th>Status</th><th>Math</th><th>Ethics</th><th>PE</th><th>OOP</th><th>Platform</th><th>ReEd</th><th>GPA</th><th></th></tr></thead>
+                            <tbody id="instructorBody"></tbody>
+                        </table>
+                    </div>
+                    <div class="footer-note">Click any grade value to edit inline · Grouped by Section, sorted A–Z by last name</div>
+                </div>
+            </div>
+        </div>
+        <div id="view-admin" class="tab-content">
+            <div class="page-title">Administrator Dashboard</div>
+            <p class="page-sub">Full system control — manage users, data &amp; settings</p>
+            <div class="stats">
+                <div class="stat"><div class="num" id="adminStatStudents">0</div><div class="lbl">Total Students</div></div>
+                <div class="stat gold"><div class="num" id="adminStatTeachers">0</div><div class="lbl">Teachers</div></div>
+                <div class="stat"><div class="num" id="adminStatPending">0</div><div class="lbl">Pending Approvals</div></div>
+                <div class="stat"><div class="num" id="adminStatHonor">0</div><div class="lbl">Honor Roll</div></div>
+            </div>
+            <div style="display: flex; gap: 1rem; margin-bottom: 1rem; flex-wrap: wrap;">
+                <button class="btn-small" onclick="createAdminAccount()" style="background:var(--gold);color:var(--green-deep);font-weight:bold;">+ Create Admin Account</button>
+                <button class="btn-small" onclick="createTeacherAccount()" style="background:var(--green-light);">+ Create Teacher Account</button>
+                <button class="btn-small" onclick="openAddStudentModal()" style="background:var(--green-mid);">+ Add Student</button>
+            </div>
+            <div class="admin-grid">
+                <div class="panel">
+                    <div class="panel-header"><h3>👨‍🏫 Teacher Accounts</h3><button class="btn-small" onclick="openAddUserModal('teacher')">+ Add Teacher</button></div>
+                    <div style="padding:0.9rem;" id="teacherList"></div>
+                </div>
+                <div class="panel">
+                    <div class="panel-header"><h3>⏳ Pending Approvals</h3></div>
+                    <div style="padding:0.9rem;" id="pendingList"></div>
+                </div>
+                <div class="panel" style="grid-column:1/-1;">
+                    <div class="panel-header"><h3>🎓 Students by Section</h3></div>
+                    <div class="table-wrap">
+                        <table>
+                            <thead><tr><th>ID</th><th>Name</th><th>Program</th><th>Year</th><th>Section</th><th>GPA</th><th>Status</th><th></th></tr></thead>
+                            <tbody id="adminStudentBody"></tbody>
+                        </table>
+                    </div>
+                    <div class="footer-note">Grouped by Section · Sorted A–Z by last name within each section</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer>🔹 DLSJBC Grade Management System · De La Salle John Bosco College</footer>
+</div>
+
+<div id="forgotModal" class="modal">
+    <div class="modal-card">
+        <button class="close-x" onclick="closeModal('forgotModal')">✕</button>
+        <h3>Reset Password</h3>
+        <input type="email" id="resetEmail" placeholder="Your registered email" class="input">
+        <button class="btn" onclick="sendResetCode()">Send Reset Code</button>
+        <div id="resetSection" style="display:none;margin-top:0.75rem;">
+            <input type="text" id="resetCode" placeholder="6-digit code" class="input">
+            <div class="pass-wrap">
+                <input type="password" id="newPass" placeholder="New Password" class="input">
+                <button class="pass-toggle" onclick="tp('newPass',this)" type="button">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                </button>
+            </div>
+            <button class="btn" onclick="resetPassword()">Change Password</button>
+        </div>
+        <div id="forgotMsg" class="msg"></div>
+    </div>
+</div>
+
+<div id="studentModal" class="modal">
+    <div class="modal-card">
+        <button class="close-x" onclick="closeModal('studentModal')">✕</button>
+        <h3 id="studentModalTitle">Add New Student</h3>
+        <input type="text" id="mId" placeholder="Student ID (e.g., D2025001)" class="input">
+        <input type="text" id="mName" placeholder="Full Name (Last, First)" class="input">
+        <div class="modal-three">
+            <select id="mProgram" class="input"><option value="">-- Program --</option><option>BSIT</option><option>BSHRM</option><option>BSTM</option><option>TEED</option><option>BEED</option><option>BSCS</option><option>BSBA</option><option>BSA</option></select>
+            <select id="mYear" class="input"><option value="">-- Year --</option><option>1st Year</option><option>2nd Year</option><option>3rd Year</option><option>4th Year</option></select>
+            <select id="mSection" class="input"><option value="">-- Section --</option></select>
+        </div>
+        <select id="mStatus" class="input"><option value="active">Active</option><option value="inactive">On Leave</option></select>
+        <hr class="divider">
+        <label class="form-label">Initial Grades (1.0 – 5.0)</label>
+        <div class="grade-row"><label>Math:</label><input type="number" step="0.1" id="mMath" class="num-input" value="1.5" min="1.0" max="5.0"></div>
+        <div class="grade-row"><label>Ethics:</label><input type="number" step="0.1" id="mEthics" class="num-input" value="1.5" min="1.0" max="5.0"></div>
+        <div class="grade-row"><label>PE:</label><input type="number" step="0.1" id="mPE" class="num-input" value="1.5" min="1.0" max="5.0"></div>
+        <div class="grade-row"><label>OOP:</label><input type="number" step="0.1" id="mOOP" class="num-input" value="1.5" min="1.0" max="5.0"></div>
+        <div class="grade-row"><label>Platform:</label><input type="number" step="0.1" id="mPlatform" class="num-input" value="1.5" min="1.0" max="5.0"></div>
+        <div class="grade-row"><label>ReEd:</label><input type="number" step="0.1" id="mReEd" class="num-input" value="1.5" min="1.0" max="5.0"></div>
+        <button class="btn" style="margin-top:0.9rem;" onclick="saveStudent()">Save Student</button>
+        <div id="studentModalMsg" class="msg"></div>
+    </div>
+</div>
+
+<div id="addUserModal" class="modal">
+    <div class="modal-card">
+        <button class="close-x" onclick="closeModal('addUserModal')">✕</button>
+        <h3 id="addUserModalTitle">Add User</h3>
+        <input type="hidden" id="addUserRole">
+        <input type="text" id="auFullname" placeholder="Full Name" class="input">
+        <input type="text" id="auUsername" placeholder="Username" class="input">
+        <input type="email" id="auEmail" placeholder="Email" class="input">
+        <input type="text" id="auExtra" placeholder="Department" class="input">
+        <div class="pass-wrap">
+            <input type="password" id="auPass" placeholder="Password" class="input">
+            <button class="pass-toggle" onclick="tp('auPass',this)" type="button">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            </button>
+        </div>
+        <button class="btn" onclick="saveNewUser()">Create Account</button>
+        <div id="addUserMsg" class="msg"></div>
+    </div>
+</div>
+
+<script src="dlsjbc.js"></script>
+</body>
+</html>
